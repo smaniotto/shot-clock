@@ -30,21 +30,20 @@ class ShotTimerContainer extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (this.props.time !== nextProps.time)
+    if (this.props.time !== nextProps.time) {
       this.setState({
-        time: this.props.time,
-        timeStarted: this.getTimeStarted(this.props.time)
+        time: nextProps.time,
       })
-  }
+    }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.ticking !== prevProps.ticking)
+    if (this.props.ticking !== nextProps.ticking) {
       clearInterval(this.intervalId)
+    }
 
-    if (this.props.ticking && !prevProps.ticking) {
+    if (!this.props.ticking && nextProps.ticking) {
       this.intervalId = setInterval(this.updateTimer, UPDATE_INTERVAL)
       this.setState({
-        timeStarted: this.getTimeStarted(this.props.time)
+        timeStarted: this.getTimeStarted(nextProps.time),
       })
     }
   }
@@ -52,19 +51,21 @@ class ShotTimerContainer extends Component {
   render() {
     return (
       <Text style={styles.timer} onPress={this.toggleTicking}>
-        {this.state.time}
+        {this.state.time.toFixed(1)}
       </Text>
     )
   }
 
   // Listeners
   updateTimer() {
-    if (this.state.time > 0)
+    if (this.state.time > 0) {
       this.setState({
         time: (this.state.timeStarted - (new Date()).getTime()) / 1000
       })
-    else
+    } else {
+      this.props.stopTimer(0.0)
       this.props.resetTimer()
+    }
   }
 
   toggleTicking() {
