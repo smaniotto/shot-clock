@@ -4,7 +4,7 @@ import { START_TIMER, STOP_TIMER, RESET_TIMER } from '../actions'
 
 
 const initialTicking = false
-const initialShotTime = 24.0
+const initialShotTime = 24000
 
 
 const tickingReducer = (state = initialTicking, action) => {
@@ -25,7 +25,7 @@ const shotTimeReducer = (state = initialShotTime, action) => {
       return initialShotTime
 
     case STOP_TIMER:
-      return action.time
+      return state - action.elapsedTime
   }
 
   return state

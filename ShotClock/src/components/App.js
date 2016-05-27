@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 
+import GestureContainer from '../containers/GestureContainer'
 import ShotTimerContainer from '../containers/ShotTimerContainer'
 
 
@@ -8,7 +9,9 @@ class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ShotTimerContainer />
+        <GestureContainer>
+          <ShotTimerContainer />
+        </GestureContainer>
       </View>
     )
   }

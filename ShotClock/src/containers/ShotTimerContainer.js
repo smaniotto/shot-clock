@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { startTimer, stopTimer, resetTimer } from '../actions'
+import { resetTimer } from '../actions'
 
 
 // Container constants
@@ -14,18 +14,17 @@ class ShotTimerContainer extends Component {
   constructor(props) {
     super(props)
 
-    // Internal Methods
-    this.updateTimer = this.updateTimer.bind(this)
-    this.toggleTicking = this.toggleTicking.bind(this)
-    this.getTimeStarted = this.getTimeStarted.bind(this)
-
     // Internal Attributes
     this.intervalId = undefined
 
+    // Internal methods
+    this.updateTimer = this.updateTimer.bind(this)
+    this.getTimeStarted = this.getTimeStarted.bind(this)
+
     // State
     this.state = {
-      time: 24,
-      timeStarted: this.getTimeStarted(24)
+      time: 24000,
+      timeStarted: this.getTimeStarted(24000)
     }
   }
 
@@ -49,9 +48,14 @@ class ShotTimerContainer extends Component {
   }
 
   render() {
+    let timeInSecs = this.state.time / 1000
+    timeInSecs = Math.max(timeInSecs, 0)
+
+    let decimalPlaces = timeInSecs >= 10 ? 0 : 1
+
     return (
-      <Text style={styles.timer} onPress={this.toggleTicking}>
-        {this.state.time.toFixed(1)}
+      <Text style={styles.timer}>
+        {timeInSecs.toFixed(decimalPlaces)}
       </Text>
     )
   }
@@ -60,24 +64,14 @@ class ShotTimerContainer extends Component {
   updateTimer() {
     if (this.state.time > 0) {
       this.setState({
-        time: (this.state.timeStarted - (new Date()).getTime()) / 1000
+        time: this.state.timeStarted - (new Date()).getTime()
       })
-    } else {
-      this.props.stopTimer(0.0)
-      this.props.resetTimer()
     }
-  }
-
-  toggleTicking() {
-    if (this.props.ticking)
-      this.props.stopTimer(this.state.time)
-    else
-      this.props.startTimer()
   }
 
   // Helpers
   getTimeStarted(time) {
-    return (new Date()).getTime() + 1000 * time
+    return (new Date()).getTime() + time
   }
 }
 
@@ -86,20 +80,11 @@ const stateToProps = (state) => ({
   time: state.shotTime,
 })
 
-const dispatchToProps = (dispatch) => {
-  return bindActionCreators({
-    startTimer,
-    stopTimer,
-    resetTimer
-  }, dispatch)
-}
-
 const styles = StyleSheet.create({
   timer: {
-    fontFamily: 'Courier New',
     fontSize: 80,
     color: '#efefef',
   }
 })
 
-export default connect(stateToProps, dispatchToProps)(ShotTimerContainer)
+export default connect(stateToProps)(ShotTimerContainer)
