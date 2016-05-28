@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-import { START_TIMER, STOP_TIMER, RESET_SHOT_TIME } from '../actions'
+import { START_TIMER, STOP_TIMER, RESET_SHOT_TIME, FORCE_SHOT_TIME } from '../actions'
 
 
 const initialTicking = false
@@ -26,6 +26,9 @@ const shotTimeReducer = (state = initialShotTime, action) => {
 
     case STOP_TIMER:
       return state - action.elapsedTime
+
+    case FORCE_SHOT_TIME:
+      return action.time
   }
 
   return state
