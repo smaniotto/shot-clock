@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-import { START_TIMER, STOP_TIMER, RESET_TIMER } from '../actions'
+import { START_TIMER, STOP_TIMER, RESET_SHOT_TIME } from '../actions'
 
 
 const initialTicking = false
@@ -21,7 +21,7 @@ const tickingReducer = (state = initialTicking, action) => {
 
 const shotTimeReducer = (state = initialShotTime, action) => {
   switch(action.type) {
-    case RESET_TIMER:
+    case RESET_SHOT_TIME:
       return initialShotTime
 
     case STOP_TIMER:

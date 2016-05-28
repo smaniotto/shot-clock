@@ -3,7 +3,7 @@ import { StyleSheet, TouchableHighlight, View } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { startTimer, stopTimer, resetTimer } from '../actions'
+import { startTimer, stopTimer, resetShotTime } from '../actions'
 
 
 class GestureContainer extends Component {
@@ -15,14 +15,14 @@ class GestureContainer extends Component {
 
     // Internal methods
     this.toggleTicking = this.toggleTicking.bind(this)
-    this.resetTimer = this.resetTimer.bind(this)
+    this.resetShotTime = this.resetShotTime.bind(this)
   }
 
   render() {
     return (
       <TouchableHighlight style={styles.container}
                           onPress={this.toggleTicking}
-                          onLongPress={this.resetTimer}>
+                          onLongPress={this.resetShotTime}>
         <View style={styles.content}>
           {this.props.children}
         </View>
@@ -40,9 +40,9 @@ class GestureContainer extends Component {
     }
   }
 
-  resetTimer() {
+  resetShotTime() {
     if (!this.props.ticking)
-      this.props.resetTimer();
+      this.props.resetShotTime();
   }
 }
 
@@ -55,7 +55,7 @@ const dispatchToProps = (dispatch) => {
   return bindActionCreators({
     startTimer,
     stopTimer,
-    resetTimer
+    resetShotTime
   }, dispatch)
 }
 
